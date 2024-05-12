@@ -1,0 +1,14 @@
+version: '3'
+
+tasks:
+    up:
+      cmds:
+        - docker-compose up -d
+
+    bash:
+      cmds:
+        - docker exec -it php-fpm bash
+
+    rebuild:
+      cmds:
+        - docker-compose build --no-cache

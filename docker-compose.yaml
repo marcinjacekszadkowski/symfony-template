@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16.2
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: testdb
+    ports:
+      - 15432:5432
+    networks:
+      - application
+
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: .docker/php-fpm
+      target: development-php
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/var/www/symfony:cached
+    networks:
+      - application
+
+  nginx:
+    build:
+      context: .docker/nginx
+    ports:
+      - 8080:80
+      - 8443:443
+    volumes:
+      - ./:/var/www/symfony:cached
+    depends_on:
+      - php-fpm
+    networks:
+      - application
+
+networks:
+  application:
