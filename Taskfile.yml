@@ -12,3 +12,24 @@ tasks:
     rebuild:
       cmds:
         - docker-compose build --no-cache
+
+#   CODE QUALITY
+    cs-fix:
+      cmds:
+        - docker exec php-fpm php vendor/bin/php-cs-fixer fix
+
+    phpstan:
+      cmds:
+        - docker exec php-fpm php vendor/bin/phpstan analyse src/ --level=max
+
+    unit:
+      cmds:
+        - docker exec php-fpm php vendor/bin/phpunit
+
+    test-all:
+      deps:
+        - cs-fix
+        - phpstan
+        - unit
+
+

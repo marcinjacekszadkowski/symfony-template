@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HealtzController
 {
     #[Route('/healthz')]
-    public function healthz()
+    public function healthz(): JsonResponse
     {
         return new JsonResponse(['success' => true]);
     }
